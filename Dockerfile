@@ -5,26 +5,19 @@ ARG GO_VERSION=1.19.5
 FROM golang:${GO_VERSION} AS build
 WORKDIR /src
 
+# Copy go.mod and go.sum to the container and download dependencies.
+COPY go.mod go.sum ./
+RUN go mod download
+
 # Copy the local package files to the container's workspace.
-ADD . /src
+COPY . .
 
 # Build the application.
-RUN CGO_ENABLED=0 go build -mod=vendor -o /bin/server .
+RUN CGO_ENABLED=0 go build -o /bin/server .
 
-# Create a new stage for running the application that contains the minimal
-# runtime dependencies for the application. This often uses a different base
-# image from the build stage where the necessary files are copied from the build
-# stage.
-#
-# The example below uses the alpine image as the foundation for running the app.
-# By specifying the "latest" tag, it will also use whatever happens to be the
-# most recent version of that image when you build your Dockerfile. If
-# reproducability is important, consider using a versioned tag
-# (e.g., alpine:3.17.2) or SHA (e.g., alpine:sha256:c41ab5c992deb4fe7e5da09f67a8804a46bd0592bfdf0b1847dde0e0889d2bff).
+
 FROM alpine:latest AS final
 
-# Install any runtime dependencies that are needed to run your application.
-# Leverage a cache mount to /var/cache/apk/ to speed up subsequent builds.
 RUN --mount=type=cache,target=/var/cache/apk \
     apk --update add \
         ca-certificates \
@@ -32,8 +25,6 @@ RUN --mount=type=cache,target=/var/cache/apk \
         && \
         update-ca-certificates
 
-# Create a non-privileged user that the app will run under.
-# See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 ARG UID=10001
 RUN adduser \
     --disabled-password \
@@ -47,7 +38,6 @@ USER appuser
 
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
-COPY --from=build /src/.env /.env  
 
 # Expose the port that the application listens on.
 EXPOSE 9090
