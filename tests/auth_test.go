@@ -362,7 +362,7 @@ func TestOrganizationAccess(t *testing.T) {
 		assert.NoError(t, err, "Failed to decode response")
 
 		assert.Equal(t, "success", response.Status, "Expected status success")
-		assert.Equal(t, "Organization details fetched successfully", response.Message, "Expected success message")
+		assert.Equal(t, "<message>", response.Message, "Expected <message> message")
 		assert.Equal(t, 200, res.StatusCode, "Expected status code 200")
 	})
 }
@@ -528,7 +528,7 @@ func (h *handler) getOrganization(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
-		"message": "Organization details fetched successfully",
+		"message": "<message>",
 		"data":    org,
 	})
 }

@@ -21,7 +21,7 @@ func (h *OrganizationHandler) GetAllOrganizations(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(responses.AllOrgResponse{
 		Status:  "success",
-		Message: "Organisation retrieved successfully",
+		Message: "<message>",
 		Data: &fiber.Map{
 			"organisations": &organizations,
 		},
@@ -48,7 +48,7 @@ func (h *OrganizationHandler) GetOrganization(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(responses.OrgResponse{
 		Status:  "success",
-		Message: "Organisation retrieved successfully",
+		Message: "<message>",
 		Data:    newOrganization,
 	})
 

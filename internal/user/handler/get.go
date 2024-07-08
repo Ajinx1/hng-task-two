@@ -30,7 +30,7 @@ func (h *UserHandler) GetAUser(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(responses.UResponse{
 		Status:  "success",
-		Message: "User retrieved successfully",
+		Message: "<message>",
 		Data:    userResponse,
 	})
 
