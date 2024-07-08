@@ -39,9 +39,9 @@ type OrgResponse struct {
 }
 
 type AllOrgResponse struct {
-	Status  string                     `json:"status"`
-	Message string                     `json:"message"`
-	Data    *[]models.ViewOrganization `json:"data"`
+	Status  string     `json:"status"`
+	Message string     `json:"message"`
+	Data    *fiber.Map `json:"data"`
 }
 
 type UResponse struct {
