@@ -29,7 +29,7 @@ func (h *UserHandler) Login(c *fiber.Ctx) error {
 	user, token, err := h.userService.Login(request.Email, request.Password)
 	if err != nil {
 
-		return c.Status(fiber.StatusBadRequest).JSON(responses.UserResponse{
+		return c.Status(fiber.StatusUnauthorized).JSON(responses.UserResponse{
 			Status:     "Bad request",
 			Message:    "Authentication failed",
 			StatusCode: 401,
