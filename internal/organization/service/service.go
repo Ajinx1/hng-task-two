@@ -48,7 +48,7 @@ func (s *organizationService) GetUserOrganizations(userID string) ([]models.View
 }
 
 func (s *organizationService) AddUserToOrganization(userID, orgID, requesterID string) error {
-	_, err := s.userRepository.FindByIDs(userID, requesterID)
+	_, err := s.userRepository.FindByID(userID)
 	if err != nil {
 		return err
 	}
